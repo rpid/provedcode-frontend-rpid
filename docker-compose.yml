@@ -5,36 +5,43 @@ services:
   db:
     image: postgres:15.7
     environment:
-      POSTGRES_DB: my_db  # Replace with your desired database name
-      POSTGRES_USER: my_user  # Replace with your desired username
-      POSTGRES_PASSWORD: my_password  # Replace with your desired password
+      POSTGRES_DB: provedcode  # Replace with your desired database name
+      POSTGRES_USER: app_user  # Replace with your desired username
+      POSTGRES_PASSWORD: app_pass  # Replace with your desired password
     volumes:
-      - postgres_db:/var/lib/postgresql/data  # Persistent storage for database data
+      - postgres_data:/var/lib/postgresql/data  # Persistent storage for database data
+    network_mode: bridge
 
   # Java backend
   backend:
-    build: provedcode-backend-rpid/  # Path to your backend Dockerfile
+    build: ./  # Path to your backend Dockerfile
     ports:
       - "8080:8080"  # Map container port 8080 to host port 8080
     depends_on:
       - db  # Backend depends on the database to be ready
     environment:
       # Add any environment variables your backend application needs
-      DB_URL: db/my_db
-      DB_LOGIN: my_user  # Same username used in the db service
-      DB_PASSWORD: my_password  # Same password used in the db service
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: 172.17.0.4/provedcode
+      DB_LOGIN: app_user  # Same username used in the db service
+      DB_PASSWORD: app_pass  # Same password used in the db service
+      S3_REGION: us-east-1 
+      BUCKET: my-bucket
+      S3_ACCESS_KEY: test
+      AWS_SECRET_ACCESS_KEY: test
+    network_mode: bridge
 
-  # React App frontend
   frontend:
-    build: provedcode-frontend-rpid/  # Path to your frontend Dockerfile
+    build: ../provedcode-frontend-rpid/  # Path to your frontend Dockerfile
     ports:
       - "3000:80"  # Map container port 3000 (default for Next.js) to host port 3000
     depends_on:
       - backend  # Frontend depends on the backend to be ready
     environment:
       # Add any environment variables your frontend application needs
-      REACT_APP_BASEURL: http://localhost:8080  # Backend service URL using its service name and port
+      REACT_APP_BASE_URL: http://localhost:8080
+    network_mode: bridge 
 
 # Define a volume for persistent database storage
 volumes:
-  postgres_db: {}
+  postgres_data: {}
