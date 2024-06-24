@@ -19,12 +19,13 @@ public class S3Config {
     AWSProperties awsProperties;
     @Bean
     public AmazonS3 s3() {
-	String s3Endpoint = "http://172.17.0.3:4566"; // LocalStack S3 endpoint
+	String s3Endpoint = "http://localstack:4566"; // LocalStack S3 endpoint
         AWSCredentials awsCredentials = new BasicAWSCredentials(awsProperties.accessKey(), awsProperties.secretKey());
 
         return AmazonS3ClientBuilder.standard()
 		.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(s3Endpoint, awsProperties.region()))
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .withPathStyleAccessEnabled(true)
                 .build();
     }
 
