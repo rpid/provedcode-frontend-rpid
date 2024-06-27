@@ -8,6 +8,8 @@ pipeline {
     stage('Build') {
       steps {
         echo "START Build Jobname=$JOB_NAME"
+        sh 'java -version'
+        sh 'mvn -version'
         sh 'mvn clean package'
         stash includes: 'target/*.jar', name: 'jar_file'
       }
