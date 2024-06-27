@@ -14,11 +14,20 @@ jobs:
       - name: Checks-out your repository
         uses: actions/checkout@v3
 
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: "temurin"
+
       - name: Prepare Jenkinsfile Runner
         run: |
-          curl -O https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.7/apache-maven-3.8.7-bin.zip
-          unzip apache-maven-3.8.7-bin.zip
-          rm apache-maven-3.8.7-bin.zip
+         # curl -O https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.7/apache-maven-3.8.7-bin.zip
+         # unzip apache-maven-3.8.7-bin.zip
+         # rm apache-maven-3.8.7-bin.zip
+         ./mvnw clean
+         java -version
+         which java
 
       - name: Run Jenkinsfile
         id: run_jenkinsfile
