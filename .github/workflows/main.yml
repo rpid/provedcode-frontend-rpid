@@ -16,15 +16,15 @@ jobs:
 
       - name: Prepare Jenkinsfile Runner
         run: |
-          curl -O https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.zip
-          unzip apache-maven-3.8.6-bin.zip
-          rm apache-maven-3.8.6-bin.zip
+          curl -O https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.9.6-bin.zip
+          unzip apache-maven-3.9.6-bin.zip
+          rm apache-maven-3.9.6-bin.zip
 
       - name: Run Jenkinsfile
         id: run_jenkinsfile
         run: |
           docker run --rm -v $(pwd):/workspace -v $(which mvn):/mvn -v /local/jenkinsHome:/jenkinsHome \
-              -e PATH=$PATH:/opt/java/openjdk/jre/bin:/workspace/apache-maven-3.8.6/bin \
+              -e PATH=$PATH:/opt/java/openjdk/jre/bin:/workspace/apache-maven-3.9.6/bin \
               jenkins/jenkinsfile-runner --runHome /jenkinsHome           
     
       - name: Check Test Running
