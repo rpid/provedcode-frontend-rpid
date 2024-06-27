@@ -31,7 +31,7 @@ jobs:
         run: |
           docker run --rm -v $(pwd):/workspace -v $(which mvn):/mvn -v /local/jenkinsHome:/jenkinsHome \
               -e PATH=$PATH:/workspace/apache-maven-3.8.7/bin \
-              jenkins/jenkinsfile-runner --runHome /jenkinsHome           
+              jenkins/jenkinsfile-runner:adoptopenjdk-11-jre-alpine --runHome /jenkinsHome           
     
       - name: Check Test Running
         run: 'if ! grep -q "Running com.provedcode.demo.ProvedCodeApplicationTests" /local/jenkinsHome/jobs/job/builds/1/log;  then exit 1; fi'
