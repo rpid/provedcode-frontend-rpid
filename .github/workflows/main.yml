@@ -22,12 +22,11 @@ jobs:
 
       - name: Prepare Jenkinsfile Runner
         run: |
-         # curl -O https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.7/apache-maven-3.8.7-bin.zip
-         # unzip apache-maven-3.8.7-bin.zip
-         # rm apache-maven-3.8.7-bin.zip
-         ./mvnw clean
-         java -version
-         which java
+          curl -O https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.7/apache-maven-3.8.7-bin.zip
+          unzip apache-maven-3.8.7-bin.zip
+          rm apache-maven-3.8.7-bin.zip
+          java -version
+          which java
 
       - name: Run Jenkinsfile
         id: run_jenkinsfile
