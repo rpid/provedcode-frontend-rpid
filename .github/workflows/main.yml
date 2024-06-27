@@ -25,6 +25,7 @@ jobs:
          # curl -O https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.7/apache-maven-3.8.7-bin.zip
          # unzip apache-maven-3.8.7-bin.zip
          # rm apache-maven-3.8.7-bin.zip
+          mvn -version
           chmod +x mvnw
           java -version
           echo $JAVA_HOME
