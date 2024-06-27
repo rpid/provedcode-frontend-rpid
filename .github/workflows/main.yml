@@ -30,7 +30,7 @@ jobs:
         id: run_jenkinsfile
         run: |
           docker run --rm -v $(pwd):/workspace -v $(which mvn):/mvn -v /local/jenkinsHome:/jenkinsHome \
-              -e PATH=$PATH:/opt/java/openjdk/jre/bin:/workspace/apache-maven-3.8.7/bin \
+              -e PATH=$PATH:/opt/java/openjdk/bin:/workspace/apache-maven-3.8.7/bin \
               jenkins/jenkinsfile-runner:adoptopenjdk-11-jre-alpine --runHome /jenkinsHome           
     
       - name: Check Test Running
