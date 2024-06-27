@@ -14,17 +14,11 @@ jobs:
       - name: Checks-out your repository
         uses: actions/checkout@v3
 
-      - name: Set up Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: 17
-          distribution: "temurin"
-
       - name: Prepare Jenkinsfile Runner
         run: |
-         # curl -O https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.7/apache-maven-3.8.7-bin.zip
-         # unzip apache-maven-3.8.7-bin.zip
-         # rm apache-maven-3.8.7-bin.zip
+          curl -O https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.7/apache-maven-3.8.7-bin.zip
+          unzip apache-maven-3.8.7-bin.zip
+          rm apache-maven-3.8.7-bin.zip
           which mvn
           mvn -version
           chmod +x mvnw
@@ -36,7 +30,7 @@ jobs:
         id: run_jenkinsfile
         run: |
           docker run --rm -v $(pwd):/workspace -v $(which mvn):/mvn -v /local/jenkinsHome:/jenkinsHome \
-              -e PATH=$PATH:/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64/bin:/usr/share/apache-maven-3.8.8/bin \
+              -e PATH=$PATH:/opt/java/openjdk/jre/bin:/workspace/apache-maven-3.8.7/bin \
               jenkins/jenkinsfile-runner --runHome /jenkinsHome           
     
       - name: Check Test Running
