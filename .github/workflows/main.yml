@@ -36,7 +36,7 @@ jobs:
         id: run_jenkinsfile
         run: |
           docker run --rm -v $(pwd):/workspace -v $(which mvn):/mvn -v /local/jenkinsHome:/jenkinsHome \
-              -e PATH=$PATH:/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64/bin:/workspace/apache-maven-3.8.7/bin \
+              -e PATH=$PATH:/opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.11-9/x64/bin:/usr/share/apache-maven-3.8.8/bin \
               jenkins/jenkinsfile-runner --runHome /jenkinsHome           
     
       - name: Check Test Running
