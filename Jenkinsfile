@@ -8,7 +8,7 @@ pipeline {
     stage('Build') {
       steps {
         echo "START Build Jobname=$JOB_NAME"
-        sh './mvnw clean package'
+        sh './mvn clean package'
         stash includes: 'target/*.jar', name: 'jar_file'
       }
     }
