@@ -1,14 +1,11 @@
 pipeline {
-  agent none
+  agent any
   environment {
     APP_PORT = '8080'
     JOB_NAME = "${env.JOB_NAME}"
   }
   stages {
     stage('Build') {
-      agent {
-        docker { image 'maven:3.9.6-eclipse-temurin-17-alpine' }
-      }
       steps {
         echo "START Build Jobname=$JOB_NAME"
         sh 'java -version'
