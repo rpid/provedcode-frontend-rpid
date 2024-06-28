@@ -1,1 +1,13 @@
-
+name: Java CI
+on: [push]
+jobs:
+  jfr-static-image-action-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Jenkins pipeline in the container
+        uses:
+          jenkinsci/jfr-static-image-action@master
+        with:
+          command: run
+          jenkinsfile: Jenkinsfile
