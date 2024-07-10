@@ -1,16 +1,18 @@
-name: Build java backend
 on:
-  push:
+  pull_request:
+  push: 
     branches:
       - main
   workflow_dispatch:
-
+permissions:
+  contents: read
+  actions: read
+  checks: write 
 jobs:
-  checking-pipeline:
+  build-test:
+    name: Build & Test Java Backend
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Checks-out your repository
         uses: actions/checkout@v4
 
