@@ -1,3 +1,5 @@
+name: Java CI & Docker Image
+
 on:
   pull_request:
   push: 
@@ -53,12 +55,11 @@ jobs:
 
       - name: Make executeable
         run: chmod +x ./mvnw
+        
       - name: Build and push to registry
         uses: docker/build-push-action@v6
-        env:
-          SPRING_PROFILES_ACTIVE: dev
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/provedcode-backend:dev
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/provedcode-backend
