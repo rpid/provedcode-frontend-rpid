@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:15.7
+    image: postgres:15.7-alpine
     environment:
       POSTGRES_DB: provedcode
       POSTGRES_USER: app_user
@@ -11,7 +11,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    build: ./ 
+    container_name: backend
+    image: rpid01/provedcode-backend 
     depends_on:
       - db
       - localstack
@@ -32,14 +33,14 @@ services:
 
   frontend:
     container_name: frontend
-    build: ../provedcode-frontend-rpid/ 
+    image: rpid01/provedcode-frontend 
     ports:
       - "80:80"
     depends_on:
       backend: 
         condition: service_healthy
     environment:
-       REACT_APP_BASE_URL: http://localhost
+       REACT_APP_BASE_URL: ''
 
   localstack:
     container_name: localstack
