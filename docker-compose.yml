@@ -1,47 +1,58 @@
 version: "3.9"
 
 services:
-  # PostgreSQL database
   db:
-    image: postgres:15.7
+    image: postgres:15.7-alpine
     environment:
-      POSTGRES_DB: provedcode  # Replace with your desired database name
-      POSTGRES_USER: app_user  # Replace with your desired username
-      POSTGRES_PASSWORD: app_pass  # Replace with your desired password
+      POSTGRES_DB: provedcode
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: app_pass
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persistent storage for database data
-    network_mode: bridge
+      - postgres_data:/var/lib/postgresql/data
 
-  # Java backend
   backend:
-    build: ./  # Path to your backend Dockerfile
-    ports:
-      - "8080:8080"  # Map container port 8080 to host port 8080
+    container_name: backend
+    image: rpid01/provedcode-backend:dev
     depends_on:
-      - db  # Backend depends on the database to be ready
+      - db
+      - localstack
     environment:
-      # Add any environment variables your backend application needs
       SPRING_PROFILES_ACTIVE: prod
-      DB_URL: 172.17.0.4/provedcode
-      DB_LOGIN: app_user  # Same username used in the db service
-      DB_PASSWORD: app_pass  # Same password used in the db service
-      S3_REGION: us-east-1 
+      DB_URL: db/provedcode
+      DB_LOGIN: app_user
+      DB_PASSWORD: app_pass
+      S3_REGION: us-east-2
       BUCKET: my-bucket
       S3_ACCESS_KEY: test
       AWS_SECRET_ACCESS_KEY: test
-    network_mode: bridge
+    healthcheck:
+      test: wget -qO- http://localhost:8080/actuator/health | grep UP || exit 1
+      interval: 3s
+      timeout: 5s
+      retries: 10
 
   frontend:
-    build: ../provedcode-frontend-rpid/  # Path to your frontend Dockerfile
+    container_name: frontend
+    image: rpid01/provedcode-frontend 
     ports:
-      - "3000:80"  # Map container port 3000 (default for Next.js) to host port 3000
+      - "80:80"
     depends_on:
-      - backend  # Frontend depends on the backend to be ready
+      backend: 
+        condition: service_healthy
     environment:
-      # Add any environment variables your frontend application needs
-      REACT_APP_BASE_URL: http://localhost:8080
-    network_mode: bridge 
+       REACT_APP_BASE_URL: ''
 
-# Define a volume for persistent database storage
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - AWS_DEFAULT_REGION=us-east-2
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - ./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
+      - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   postgres_data: {}
