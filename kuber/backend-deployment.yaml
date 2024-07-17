@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - env:
-            - name: AWS_SECRET_ACCESS_KEY
+            - name: S3_SECRET_KEY
               value: test
             - name: BUCKET
               value: my-bucket
@@ -34,9 +34,10 @@ spec:
               value: prod
           image: rpid01/provedcode-backend
           livenessProbe:
-            exec:
-              command:
-                - wget -qO- http://localhost:8080/actuator/health | grep UP || exit 1
+            httpGet:
+              path: /actuator/health
+              port: 8080
+              scheme: HTTP
             failureThreshold: 10
             periodSeconds: 3
             timeoutSeconds: 5
