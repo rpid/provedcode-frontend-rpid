@@ -1,10 +1,10 @@
-name: Java CI & Docker Image
+name: Java CI & Build Docker Image
 
 on:
   pull_request:
   push: 
     branches:
-      - main
+      - localstack
   workflow_dispatch:
 permissions:
   contents: read
