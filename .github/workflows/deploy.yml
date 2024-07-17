@@ -1,18 +1,18 @@
-name: Deployment On K8s Cluster
+name: Deployment on EKS cluster
 
 on: 
   workflow_run:
     workflows: [Java CI & Build Docker Image]
-    branches: [localstack]
     types:
-      - completed 
+      - completed
+  workflow_dispatch:
 permissions:
   id-token: write
   contents: read     
 
 jobs:
   Deploy_On_Cluster:
-    name: Deploy Application On Cluster
+    name: Deploy Application On EKS cluster
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo 
