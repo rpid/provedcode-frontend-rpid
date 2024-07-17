@@ -29,13 +29,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:${{ env.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Update KubeConfig
         run: | 
               mkdir -p $HOME/.kube
               echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
-              aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name mycluster 
+              aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.CLUSTER_NAME }}
 
       - name: Show cluster status
         run: kubectl get all
