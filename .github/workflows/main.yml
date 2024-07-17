@@ -62,4 +62,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/provedcode-backend:prod
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/provedcode-backend
